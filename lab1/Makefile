@@ -1,17 +1,17 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -O2
 
-TARGETS = demcat demgrep
+TARGETS = mycat mygrep
 
 .PHONY: all clean
 
 all: $(TARGETS)
 
-demcat: demcat.c
-	$(CC) $(CFLAGS) -o demcat demcat.c
+mycat: demcat.c
+	$(CC) $(CFLAGS) -o mycat demcat.c
 
-demgrep: demgrep.c
-	$(CC) $(CFLAGS) -o demgrep demgrep.c
+mygrep: demgrep.c
+	$(CC) $(CFLAGS) -o mygrep demgrep.c
 
 clean:
 	rm -f $(TARGETS)

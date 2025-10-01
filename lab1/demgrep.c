@@ -19,13 +19,8 @@ int main(int argc, char *argv[])
     char *search_pattern = argv[1];
     int total_files = argc - 2;
 
-    printf("🔍 Searching for: \"%s\"\n", search_pattern);
-    printf("📁 Files to search: %d\n\n", total_files);
-
     if (total_files == 0)
     {
-        printf("Reading from standard input:\n");
-        printf("---------------------------\n");
         
         char input_line[MAX_INPUT_SIZE];
         int match_count = 0;
@@ -38,14 +33,9 @@ int main(int argc, char *argv[])
                 printf("Match %d: %s", match_count, input_line);
             }
         }
-        
-        printf("---------------------------\n");
-        printf("Total matches found: %d\n", match_count);
     }
     else
-    {
-        int total_matches = 0;
-        
+    {        
         for (int i = 2; i < argc; i++)
         {
             FILE *input_file = fopen(argv[i], "r");
@@ -67,7 +57,6 @@ int main(int argc, char *argv[])
                 if (strstr(file_line, search_pattern) != NULL)
                 {
                     file_match_count++;
-                    total_matches++;
                     if (total_files > 1)
                     {
                         printf("%s:%d: %s", argv[i], line_number, file_line);
@@ -83,9 +72,6 @@ int main(int argc, char *argv[])
             printf("Matches in %s: %d\n\n", argv[i], file_match_count);
             fclose(input_file);
         }
-        
-        printf("====================================\n");
-        printf("🎯 Total matches across all files: %d\n", total_matches);
     }
 
     return 0;

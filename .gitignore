@@ -1,5 +1,7 @@
 demcat
 demgrep
+mycat
+mygrep
 main
 *.exe
 *.out
