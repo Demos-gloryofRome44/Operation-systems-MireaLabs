@@ -36,7 +36,7 @@ void handle_text_line(char *text_buffer, int *counter, int display_numbers,
     }
 }
 
-int main(int argc, char *argv[])  // ← ИЗМЕНИЛ НАЗВАНИЕ ФУНКЦИИ НА main
+int main(int argc, char *argv[]) 
 {
     int number_display = 0;
     int blank_skip = 0;

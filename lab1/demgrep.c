@@ -51,11 +51,11 @@ int main(int argc, char *argv[])
             FILE *input_file = fopen(argv[i], "r");
             if (!input_file)
             {
-                fprintf(stderr, "❌ Error: Could not open file '%s'\n", argv[i]);
+                fprintf(stderr, "Error: Could not open file '%s'\n", argv[i]);
                 continue;
             }
 
-            printf("📄 Searching in: %s\n", argv[i]);
+            printf("Searching in: %s\n", argv[i]);
             printf("----------------------------\n");
             
             char file_line[MAX_INPUT_SIZE];
