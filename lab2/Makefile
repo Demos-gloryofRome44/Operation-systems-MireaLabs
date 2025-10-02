@@ -1,0 +1,14 @@
+CC = gcc
+CFLAGS = -Wall -Wextra -O2
+
+TARGETS = myls
+
+.PHONY: all clean
+
+all: $(TARGETS)
+
+myls: demls.c
+	$(CC) $(CFLAGS) -o myls demls.c
+
+clean:
+	rm -f $(TARGETS)
