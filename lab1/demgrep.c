@@ -76,3 +76,25 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+
+<Program>        ::= <Statement>*
+
+<Statement>      ::= <While> | <Assignment> | <Print> | <IncrementExpr> ";" 
+
+<While>          ::= "while" "(" <Condition> ")" <Statement>
+
+<Condition>      ::= <Expression> <ComparisonOp> <Expression>
+
+<Expression>     ::= <IncrementExpr> | <Identifier> | <Number>
+
+<IncrementExpr>  ::= ("++" | "--") <Identifier>
+
+<ComparisonOp>   ::= "<" | ">" | "<=" | ">=" | "==" | "!="
+
+<Assignment>     ::= <Identifier> "=" <Expression> ";"
+
+<Print>          ::= "print" "(" <Expression> ")" ";"
+
+<While> ::= "while" "(" <Condition> ")" <Statement> 
+(нетерминал While раскрывается в строку независимо от контекста)
+<Assignment> ::= <Identifier> "=" <Expression> ";"

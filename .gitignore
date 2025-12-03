@@ -5,6 +5,10 @@ mychmod
 myls
 mygrep
 main
+consumer
+check_pipe
+producer
+archiver
 *.exe
 *.out
 *.app
