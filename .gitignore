@@ -9,6 +9,8 @@ consumer
 check_pipe
 producer
 archiver
+sender
+receiver
 *.exe
 *.out
 *.app
