@@ -8,11 +8,14 @@
 char shared_array[ARRAY_SIZE];
 pthread_mutex_t mutex;
 int write_counter = 0;
+volatile int program_running = 1;
 
 void* writer_thread(void* arg) {
+    (void)arg;
+    
     printf("%s\n", MSG_WRITER_STARTED);
     
-    while (1) {
+    while (program_running) {
         pthread_mutex_lock(&mutex);
         
         printf("%s\n", MSG_WRITER_WRITING);
@@ -28,6 +31,7 @@ void* writer_thread(void* arg) {
         sleep(WRITER_SLEEP_TIME);
     }
     
+    printf("%s\n", "Пишущий поток завершает работу");
     return NULL;
 }
 
@@ -37,10 +41,10 @@ void* reader_thread(void* arg) {
     printf(MSG_READER_STARTED, thread_id);
     printf("\n");
     
-    while (1) {
+    while (program_running) {
         pthread_mutex_lock(&mutex);
         
-        printf(MSG_READER_READ, thread_id, shared_array);
+        printf(MSG_READER_READ, thread_id, (unsigned long)pthread_self(), shared_array);
         printf("\n");
         
         pthread_mutex_unlock(&mutex);
@@ -48,14 +52,8 @@ void* reader_thread(void* arg) {
         sleep(READER_SLEEP_TIME);
     }
     
+    printf("Читающий поток %ld завершает работу\n", thread_id);
     return NULL;
-}
-
-void cleanup_thread(pthread_t thread, const char* thread_type) {
-    int cancel_result = pthread_cancel(thread);
-    if (cancel_result != 0) {
-        fprintf(stderr, "%s: %s\n", MSG_THREAD_CANCEL_ERROR, thread_type);
-    }
 }
 
 int main() {
@@ -63,7 +61,9 @@ int main() {
     pthread_t reader_tids[NUM_READERS];
     int i;
     
-    printf("%s\n", MSG_PROGRAM_STARTED);
+    printf("%s\n", MSG_PROGRAM_START);
+    printf(MSG_THREADS_CREATED, NUM_READERS);
+    printf("\n");
     
     if (pthread_mutex_init(&mutex, NULL) != 0) {
         fprintf(stderr, "%s\n", MSG_MUTEX_INIT_ERROR);
@@ -79,36 +79,31 @@ int main() {
     }
     
     for (i = 0; i < NUM_READERS; i++) {
-        if (pthread_create(&reader_tids[i], NULL, reader_thread, (void*)(long)(i + 1)) != 0) {
+        if (pthread_create(&reader_tids[i], NULL, reader_thread, 
+                          (void*)(long)(i + 1)) != 0) {
             fprintf(stderr, "%s %d\n", MSG_THREAD_CREATE_ERROR, i + 1);
             
-            cleanup_thread(writer_tid, "пишущего потока");
+            program_running = 0;
+            
             for (int j = 0; j < i; j++) {
-                cleanup_thread(reader_tids[j], "читающего потока");
+                pthread_join(reader_tids[j], NULL);
             }
+            pthread_join(writer_tid, NULL);
             
             pthread_mutex_destroy(&mutex);
             exit(EXIT_FAILURE);
         }
     }
     
-    printf("Программа будет работать %d секунд...\n", PROGRAM_DURATION);
+    printf(MSG_PROGRAM_WORKING, PROGRAM_DURATION);
+    printf("\n");
     
     sleep(PROGRAM_DURATION);
     
-    printf("\n%s\n", MSG_PROGRAM_ENDING);
+    printf("\n%s\n", MSG_PROGRAM_END);
+    program_running = 0;
     
-    cleanup_thread(writer_tid, "пишущего потока");
-    
-    for (i = 0; i < NUM_READERS; i++) {
-        cleanup_thread(reader_tids[i], "читающего потока");
-    }
-    
-    printf("%s\n", MSG_THREAD_JOINED);
-    
-    if (pthread_join(writer_tid, NULL) != 0) {
-        fprintf(stderr, "%s: пишущего потока\n", MSG_THREAD_JOIN_ERROR);
-    }
+    printf("%s\n", MSG_WAITING_THREADS);
     
     for (i = 0; i < NUM_READERS; i++) {
         if (pthread_join(reader_tids[i], NULL) != 0) {
@@ -116,12 +111,17 @@ int main() {
         }
     }
     
+    if (pthread_join(writer_tid, NULL) != 0) {
+        fprintf(stderr, "%s: пишущего потока\n", MSG_THREAD_JOIN_ERROR);
+    }
+    
     if (pthread_mutex_destroy(&mutex) != 0) {
         fprintf(stderr, "%s\n", MSG_MUTEX_DESTROY_ERROR);
     }
     
-    printf("\n%s\n", MSG_PROGRAM_FINISHED);
-    printf("Всего было сделано записей: %d\n", write_counter);
+    printf("\n%s\n", MSG_PROGRAM_FINISH);
+    printf(MSG_TOTAL_WRITES, write_counter);
+    printf("\n");
     
-    return 0;
+    return EXIT_SUCCESS;
 }
