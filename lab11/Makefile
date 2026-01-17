@@ -1,0 +1,17 @@
+CC = gcc
+CFLAGS = -Wall -Wextra -pthread -std=c11
+TARGET = main
+SOURCE = main.c
+
+all: $(TARGET)
+
+$(TARGET): $(SOURCE)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SOURCE)
+
+clean:
+	rm -f $(TARGET)
+
+run: $(TARGET)
+	./$(TARGET)
+
+.PHONY: all clean run
