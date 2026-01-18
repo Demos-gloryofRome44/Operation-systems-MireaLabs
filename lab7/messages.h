@@ -1,33 +1,32 @@
 #ifndef MESSAGES_H
 #define MESSAGES_H
 
-#define MSG_SHM_CREATE_ERROR "Ошибка создания разделяемой памяти"
-#define MSG_SHM_ATTACH_ERROR "Ошибка подключения к разделяемой памяти"
-#define MSG_SHM_DETACH_ERROR "Ошибка отключения от разделяемой памяти"
-#define MSG_SHM_DELETE_ERROR "Ошибка удаления разделяемой памяти"
-#define MSG_SEM_CREATE_ERROR "Ошибка создания семафора"
-#define MSG_SEM_OPEN_ERROR "Ошибка открытия семафора"
-#define MSG_SEM_WAIT_ERROR "Ошибка ожидания семафора"
-#define MSG_SEM_POST_ERROR "Ошибка освобождения семафора"
-#define MSG_SEM_CLOSE_ERROR "Ошибка закрытия семафора"
-#define MSG_SEM_UNLINK_ERROR "Ошибка удаления семафора"
-#define MSG_ALREADY_RUNNING "Программа уже запущена. Завершение."
-#define MSG_IPC_FAILED "Ошибка IPC. Завершение."
-#define MSG_SHM_EMPTY "Разделяемая память пуста"
-#define MSG_READING_DATA "Чтение данных..."
-#define MSG_WRITING_DATA "Запись данных..."
-#define MSG_READ_FAILED "Ошибка чтения данных"
-#define MSG_WRITE_FAILED "Ошибка записи данных"
-#define MSG_TIME_FORMAT "Время: %s PID: %d"
-#define MSG_SENDER_TIME "Отправитель - %s (PID: %d)"
-#define MSG_RECEIVER_TIME "Получатель - %s (PID: %d)"
-#define MSG_PRESS_CTRL_C "Нажмите Ctrl+C для завершения"
-#define MSG_CLEANUP "Очистка ресурсов..."
-#define MSG_WAITING_DATA "Ожидание данных..."
+#define SHM_KEY_FILE "shm_ipc.key"
+#define SHM_KEY_ID 65
+#define SHM_SIZE 512
+#define MAX_OPERATIONS 50
 
-#define SHM_NAME "/time_shm_practice7"
-#define SEM_SENDER_NAME "/sem_sender_practice7"
-#define SEM_RECEIVER_NAME "/sem_receiver_practice7"
-#define SHM_SIZE 256
+#define MSG_SENDER_START "Отправитель (PID: %d) запущен.\n"
+#define MSG_ALREADY_RUNNING "Программа отправителя уже запущена.\n"
+#define MSG_SHARED_MEM_CREATED "Разделяемая память создана успешно.\n"
+#define MSG_WRITING_DATA ">>> Запись данных в разделяемую память...\n"
+#define MSG_DATA_WRITTEN "Время: %s | PID отправителя: %d\n"
+#define MSG_SENDER_EXIT "Отправитель завершает работу...\n"
+#define MSG_CLEANUP_RESOURCES "Освобождение ресурсов...\n"
+#define MSG_OPERATIONS_COMPLETED "Выполнено операций записи: %d\n"
+#define MSG_CTRL_C_HINT "Нажмите Ctrl+C для завершения работы.\n"
 
-#endif
+#define MSG_RECEIVER_START "Получатель (PID: %d) запущен и подключился к разделяемой памяти.\n"
+#define MSG_IPC_SETUP_FAILED "Ошибка настройки межпроцессного взаимодействия.\n"
+#define MSG_SHARED_MEM_CONNECTED "Успешное подключение к разделяемой памяти.\n"
+#define MSG_READING_DATA ">>> Чтение данных из разделяемой памяти...\n"
+#define MSG_DATA_READ "Локальное время: %s | PID получателя: %d\n"
+#define MSG_RECEIVED_DATA "Полученные данные: %s\n"
+#define MSG_SEPARATOR "----------------------------------------\n"
+#define MSG_RECEIVER_EXIT "Получатель завершает работу...\n"
+#define MSG_WAITING_NEW_DATA "Ожидание новых данных...\n"
+
+#define TIME_FORMAT_LONG "%Y-%m-%d %H:%M:%S"
+#define TIME_FORMAT_SHORT "%H:%M:%S"
+
+#endif // MESSAGES_H
